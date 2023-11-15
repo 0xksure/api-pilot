@@ -1,0 +1,33 @@
+info:
+  contact: {}
+paths:
+  /balance:
+    get:
+      description: Gets the balance of a user given an user id
+      parameters:
+      - description: User id is the unique identitier of the user
+        in: query
+        name: userId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: Gets the balance of a user given an user id
+  /ping:
+    get:
+      description: check connection
+      parameters:
+      - description: Account Id
+        in: query
+        name: name
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: Ping
+swagger: "2.0"
