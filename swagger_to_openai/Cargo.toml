@@ -5,6 +5,9 @@ edition = "2021"
 description="A command line tool to convert swagger (OpenAPI) v2 to OpenAI code format"
 readme="README.md"
 license = "MIT"
+homepage="https://github.com/0xksure/api-pilot"
+repository="https://github.com/0xksure/api-pilot"
+documentation="https://github.com/0xksure/api-pilot/blob/main/README.md"
 keywords=["cli","OpenAPI","OpenAI","ChatGPT"]
 categories = ["command-line-utilities"]
 
