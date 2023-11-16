@@ -16,7 +16,7 @@ const docTemplate = `{
     "basePath": "{{.BasePath}}",
     "paths": {
         "/balance": {
-            "get": {
+            "post": {
                 "description": "Gets the balance of a user given an user id",
                 "produces": [
                     "application/json"
@@ -39,7 +39,7 @@ const docTemplate = `{
             }
         },
         "/transfer": {
-            "get": {
+            "post": {
                 "description": "This endpoint transfers money between two user ids",
                 "produces": [
                     "application/json"

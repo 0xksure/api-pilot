@@ -2,7 +2,7 @@ info:
   contact: {}
 paths:
   /balance:
-    get:
+    post:
       description: Gets the balance of a user given an user id
       parameters:
       - description: User id is the unique identitier of the user
@@ -17,7 +17,7 @@ paths:
           description: OK
       summary: Gets the balance of a user given an user id
   /transfer:
-    get:
+    post:
       description: This endpoint transfers money between two user ids
       parameters:
       - description: From user Id

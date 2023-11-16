@@ -4,26 +4,29 @@ import time
 import sys
 import json
 import requests
-import subprocess
 from enum import Enum
 import logging
 
 logger = logging.getLogger('simple_example')
 logger.setLevel(logging.DEBUG)
 
+class Result(Enum):
+    OK = 1
+    ERROR = 2
+    PROMPT = 3
 
-def setup_assistant(client, task):
+
+def setup_assistant(client, task,assistant_instructions):
     # Load function json from file 
     with open("idls/openai/openai.json") as f:
         function_json = json.load(f)
     logger.debug("Debugging: Function json is ", function_json)
     # create a new agent
     assistant = client.beta.assistants.create(
-        instructions="You are a wrapper around a payments api. Use the provided endpoints to answer user questions. Sometimes functions has to be combined to achieve the intended result.",
+        instructions=assistant_instructions,
         model="gpt-4-1106-preview",
         tools=function_json
     )
-
 
     # Create a new thread
     thread = client.beta.threads.create()
@@ -38,10 +41,7 @@ def setup_assistant(client, task):
     # Return the assistant ID and thread ID
     return assistant.id, thread.id
 
-class Result(Enum):
-    OK = 1
-    ERROR = 2
-    PROMPT = 3
+
 
 
 def run_assistant(client, assistant_id, thread_id):
@@ -84,9 +84,9 @@ def func_name_to_path(func_name: str):
 
 def execute_requests(request_list,host):
     # Call requests agains the endpoint
+    responses = []
     for request in request_list:
         logger.debug(f"Debugging: Request is {request}")
-        
         func = request.function
         args = json.loads(func.arguments)
         func_name = func.name
@@ -96,31 +96,41 @@ def execute_requests(request_list,host):
         logger.debug("Debugging: Request type is ", request_type," with arguments ", args)
 
         # make request 
-        if request_type == "GET":
+        if request_type == "POST":
             try:
                 print("Debugging: Making a GET request to ", host+path, "with arguments ", args)
                 response = requests.post(host+path, params=args)
-                return Result.OK,response.json()
+                responses.append(response)
             except Exception as e:
                 print("Failed to make request to ", host+path," cause: ", e)
                 return Result.ERROR,None
 
-            
+        if len(responses) != len(request_list):
+            return Result.ERROR,None
+        return Result.OK, responses
 
 if __name__ == "__main__":
         client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
-        host = "http://localhost:8000"
+        if not client:
+            print("Failed to create client")
+            sys.exit(1)
+        host = os.environ.get("HOST")
+        if not host:
+            print("Failed to get host")
+            sys.exit(1)
+        assistant_instructions = os.environ.get("ASSISTANT_INSTRUCTIONS")
+        if not assistant_instructions:
+            print("Failed to get assistant instructions")
+            sys.exit(1)
         print("Welcome to the OpenAI Payments API Wrapper")
         print("Type your question and press enter to get started")
         while True:
             prompt = input("> ")
-            if prompt == '' and p.poll() is not None:
+            if prompt == '':
                 break
             if prompt:
                 task = prompt.strip()
-              
-            
-                assistant_id, thread_id = setup_assistant(client, task)
+                assistant_id, thread_id = setup_assistant(client, task,assistant_instructions)
                 logger.debug(f"Debugging: Useful for checking the generated agent in the playground. https://platform.openai.com/playground?mode=assistant&assistant={assistant_id}")
                 logger.debug(f"Debugging: Useful for checking logs. https://platform.openai.com/playground?thread={thread_id}")
                 startTime = time.time()
@@ -141,20 +151,12 @@ if __name__ == "__main__":
                     logger.debug(f"Debugging: Total time taken: {time.time() - startTime}")
                     result, response = execute_requests(request_list,host)
                     if result == Result.OK:
-                        if response["balance"]:
-                            print("Balance is: ", response["balance"])
-                            run = client.beta.threads.runs.submit_tool_outputs(
-                                    thread_id=thread_id,
-                                    run_id=run_id,
-                                    tool_outputs=[
-                                        {
-                                            "tool_call_id": request_list[0].id,
-                                            "output": response["balance"],
-                                        },
-                                    ]
-                                )
-                        else:
-                            print("Balance was not found. Please try again")
+                        print("Responses are: ")
+                        for r in response:
+                            print(r)
+                        continue
+                    else:
+                        print("Found no matching requests")
                         continue
 
        

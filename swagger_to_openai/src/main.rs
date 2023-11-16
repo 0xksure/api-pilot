@@ -1,6 +1,6 @@
 use std::{
     fs,
-    rc::{Rc},
+    rc::Rc,
     sync::{mpsc, Arc},
     thread, time,
 };
@@ -53,7 +53,6 @@ fn main() {
             log::info!("Output file: {:?}", output_file_path);
             // load the swagger yaml
             let swagger = Swagger::from_file(&swagger_file_path).unwrap();
-            println!("Swagger: {:?}", swagger);
 
             // convert to openAI
             let openai_funcs = gen_openaifunctions_from_swagger(swagger).unwrap();

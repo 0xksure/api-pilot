@@ -35,7 +35,7 @@ func main() {
 // @Param fromUserId query string false "From user Id"
 // @Param toUserId query string false "To user Id"
 // @Param amount query string false "Amount to transfer"
-// @Router /transfer [get]
+// @Router /transfer [post]
 func handler(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("Gorilla!\n"))
 }
@@ -50,7 +50,7 @@ type BalanceResponse struct {
 // @Produce  json
 // @Success 200
 // @Param userId query string true "User id is the unique identitier of the user"
-// @Router /balance [get]
+// @Router /balance [post]
 func balanceHandler(w http.ResponseWriter, r *http.Request) {
 	userId := r.URL.Query().Get("userId")
 	balance := "100"
