@@ -27,18 +27,30 @@
                 }
             }
         },
-        "/ping": {
+        "/transfer": {
             "get": {
-                "description": "check connection",
+                "description": "This endpoint transfers money between two user ids",
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Ping",
+                "summary": "Transfers money between two user ids",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Account Id",
-                        "name": "name",
+                        "description": "From user Id",
+                        "name": "fromUserId",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "To user Id",
+                        "name": "toUserId",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Amount to transfer",
+                        "name": "amount",
                         "in": "query"
                     }
                 ],

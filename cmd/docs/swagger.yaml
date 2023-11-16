@@ -16,18 +16,26 @@ paths:
         "200":
           description: OK
       summary: Gets the balance of a user given an user id
-  /ping:
+  /transfer:
     get:
-      description: check connection
+      description: This endpoint transfers money between two user ids
       parameters:
-      - description: Account Id
+      - description: From user Id
         in: query
-        name: name
+        name: fromUserId
+        type: string
+      - description: To user Id
+        in: query
+        name: toUserId
+        type: string
+      - description: Amount to transfer
+        in: query
+        name: amount
         type: string
       produces:
       - application/json
       responses:
         "200":
           description: OK
-      summary: Ping
+      summary: Transfers money between two user ids
 swagger: "2.0"

@@ -1,0 +1,10 @@
+FROM rust:latest as builder
+
+
+WORKDIR /app
+COPY cargo.toml cargo.lock ./
+COPY src ./src
+RUN cargo build
+
+FROM builder as runtime
+COPY --from=builder /app/target/debug/swagger_to_openai /app/swagger_to_openai

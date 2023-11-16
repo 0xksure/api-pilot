@@ -1,0 +1,8 @@
+services: 
+  api:
+    image: err/test-api
+    build: 
+      context: ./cmd
+      dockerfile: dockerfile
+    ports:
+      - 8000:8000
