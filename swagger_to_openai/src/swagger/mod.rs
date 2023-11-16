@@ -1,6 +1,5 @@
 use std::{
     collections::HashMap,
-    env,
     fs::File,
     io::{Error, Read},
 };

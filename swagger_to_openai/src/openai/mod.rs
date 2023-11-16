@@ -4,7 +4,7 @@ use std::{
     io::{Error, Write},
 };
 
-use oas3::spec::Parameter;
+
 use serde;
 
 use crate::swagger::Swagger;

@@ -1,6 +1,6 @@
 use std::{
     fs,
-    rc::{self, Rc},
+    rc::{Rc},
     sync::{mpsc, Arc},
     thread, time,
 };
