@@ -1,4 +1,4 @@
-# Prototype of crating prompts for APIs
+# API Assistant
 
 The project allows you to interact with you API through prompts. 
 
@@ -7,28 +7,36 @@ The project allows you to interact with you API through prompts.
 ## 1. Install s2o 
 Either from crates
 ```
-> cargo install s2o
+cargo install s2o
 ```
-or using the local code
+or from source
 ```
-> cd swagger_to_openai
-> cargo run 
-```
-
-## Start interacting with the example api
-
-```
->
+cd swagger_to_openai
+cargo run 
 ```
 
-## Workflow
-
-1. work on you project and ouput a swagger.json
-2. use the swagger_to_openai cli to convert the swagger to an openai idl
-3. read the idl in the python script 
-4. create a prompt -> openai will find the appropriate endpoint and call it 
-
-```bash
-    python src/main.py 
+If you have a swagger file then you can convert it to the OpenAPI IDL json by running
 ```
-Will activate the assistant and lets you query you api through prompts!
+s2o convert swagger.json openai.json
+```
+
+The `openai.json` file can then be pointed to by the API assistant. 
+
+## 2. Install the API assistant 
+You can install the [API assistant](https://pypi.org/project/api-assistant/) using pip. Install the tool by running
+```
+pip install api-assistant
+```
+
+Read more about the tool and required environment variable [here](./src/README.md) 
+
+## 3. Start interacting your API
+
+Assuming you have a `openai.json` file and your web server is running at `printenv | grep HOST` you can interact with it using OpenAI 
+```
+api-chat --idl=openai.json
+```
+Good luck. 
+
+# Support
+Please file an issue if any of the above operations fails and we will support you as soon as possible.

@@ -2,6 +2,7 @@ from openai import OpenAI
 import os 
 import time
 import sys
+import click
 import json
 import requests
 from enum import Enum
@@ -16,10 +17,8 @@ class Result(Enum):
     PROMPT = 3
 
 
-def setup_assistant(client, task,assistant_instructions):
+def setup_assistant(client, task,assistant_instructions,function_json):
     # Load function json from file 
-    with open("idls/openai/openai.json") as f:
-        function_json = json.load(f)
     logger.debug("Debugging: Function json is ", function_json)
     # create a new agent
     assistant = client.beta.assistants.create(
@@ -88,6 +87,12 @@ def execute_requests(request_list,host):
     for request in request_list:
         logger.debug(f"Debugging: Request is {request}")
         func = request.function
+        if not func:
+            print("Failed to get function from request: ", request)
+            return Result.ERROR,None
+        if not func.arguments:
+            print("Failed to get arguments from function: ", func)
+            return Result.ERROR,None
         args = json.loads(func.arguments)
         func_name = func.name
         logger.debug("Func name is ", func_name)
@@ -100,7 +105,7 @@ def execute_requests(request_list,host):
             try:
                 print("Debugging: Making a GET request to ", host+path, "with arguments ", args)
                 response = requests.post(host+path, params=args)
-                responses.append(response)
+                responses.append(response.json())
             except Exception as e:
                 print("Failed to make request to ", host+path," cause: ", e)
                 return Result.ERROR,None
@@ -109,62 +114,64 @@ def execute_requests(request_list,host):
             return Result.ERROR,None
         return Result.OK, responses
 
-if __name__ == "__main__":
-        client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
-        if not client:
-            print("Failed to create client")
-            sys.exit(1)
-        host = os.environ.get("HOST")
-        if not host:
-            print("Failed to get host")
-            sys.exit(1)
-        assistant_instructions = os.environ.get("ASSISTANT_INSTRUCTIONS")
-        if not assistant_instructions:
-            print("Failed to get assistant instructions")
-            sys.exit(1)
-        print("Welcome to the OpenAI Payments API Wrapper")
-        print("Type your question and press enter to get started")
-        while True:
-            prompt = input("> ")
-            if prompt == '':
-                break
-            if prompt:
-                task = prompt.strip()
-                assistant_id, thread_id = setup_assistant(client, task,assistant_instructions)
-                logger.debug(f"Debugging: Useful for checking the generated agent in the playground. https://platform.openai.com/playground?mode=assistant&assistant={assistant_id}")
-                logger.debug(f"Debugging: Useful for checking logs. https://platform.openai.com/playground?thread={thread_id}")
-                startTime = time.time()
-                status,request_list,run_status,run_id = run_assistant(client, assistant_id, thread_id)
-                logger.debug(request_list)
-                
-                
-                if status == Result.ERROR:
-                    logger.debug("Error with running the assistant: ",run_status)
-                    sys.exit(1)
-                
-                elif status == Result.PROMPT:
-                    logger.debug("Debugging: Run completed successfully")
-                    print(request_list.data[0].content[0].text.value)
+
+# Main is the cli entrypoint
+@click.command()
+@click.option('--idl',
+        prompt="The file location of the OpenAI IDL json",
+        help="If you don't have a OpenAI IDL json then please install the s2o rust crate and convert your swagger.",
+        type=click.Path(exists=True))
+def main(idl):
+    client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
+    if not client:
+        print("Failed to create client")
+        sys.exit(1)
+    host = os.environ.get("HOST")
+    if not host:
+        print("Failed to get host")
+        sys.exit(1)
+    assistant_instructions = os.environ.get("ASSISTANT_INSTRUCTIONS")
+    if not assistant_instructions:
+        print("Failed to get assistant instructions")
+        sys.exit(1)
+
+    with open(idl) as f:
+        function_json = json.load(f)
+
+    print("Welcome to the OpenAI API Wrapper")
+    print("Type your question and press enter to get started")
+    print("Type exit to exit")
+    while True:
+        prompt = input("> ")
+        if prompt == "exit":
+            break
+        if prompt:
+            task = prompt.strip()
+            assistant_id, thread_id = setup_assistant(client, task,assistant_instructions,function_json)
+            logger.debug(f"Debugging: Useful for checking the generated agent in the playground. https://platform.openai.com/playground?mode=assistant&assistant={assistant_id}")
+            logger.debug(f"Debugging: Useful for checking logs. https://platform.openai.com/playground?thread={thread_id}")
+            startTime = time.time()
+            status,request_list,run_status,run_id = run_assistant(client, assistant_id, thread_id)
+            logger.debug(request_list)
+            
+            
+            if status == Result.ERROR:
+                logger.debug("Error with running the assistant: ",run_status)
+                sys.exit(1)
+            
+            elif status == Result.PROMPT:
+                logger.debug("Debugging: Run completed successfully")
+                print(request_list.data[0].content[0].text.value)
+                continue
+            
+            elif status == Result.OK:
+                logger.debug(f"Debugging: Total time taken: {time.time() - startTime}")
+                result, response = execute_requests(request_list,host)
+                if result == Result.OK:
+                    print("Responses are: ")
+                    for r in response:
+                        print(r)
                     continue
-                
-                elif status == Result.OK:
-                    logger.debug(f"Debugging: Total time taken: {time.time() - startTime}")
-                    result, response = execute_requests(request_list,host)
-                    if result == Result.OK:
-                        print("Responses are: ")
-                        for r in response:
-                            print(r)
-                        continue
-                    else:
-                        print("Found no matching requests")
-                        continue
-
-       
-
-        
-
-   
-
-
-
-
+                else:
+                    print("Found no matching requests")
+                    continue
