@@ -40,3 +40,6 @@ Good luck.
 
 # Support
 Please file an issue if any of the above operations fails and we will support you as soon as possible.
+
+# Package usage
+It is also possible to use the package headless. The package contains a simple interface that an `OpenAIAssistance` class implements. It is possible to wrap this class in your own CLI or API if you want. 
