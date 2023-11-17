@@ -6,3 +6,4 @@ assistant/
 build
 dist
 */**/__pycache__
+assistant3.12
