@@ -4,11 +4,11 @@ start_api:
 
 # generate swagger for api
 generate_swagger:
-    cd cmd && swag init -g main.go
+    cd mock-api && swag init -g main.go
 
 # convert swagger to openapi format
 listen_to_swagger:
-    cd swagger_to_openai && RUST_LOG=debug cargo run listen ../cmd/docs ../idls/openai/
+    cd swagger_to_openai && RUST_LOG=debug cargo run listen ../mock-api/docs ../idls/openai/
 
 
 # interact with openapi
