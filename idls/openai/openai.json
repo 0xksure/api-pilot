@@ -1,1 +1,46 @@
-[{"type":"function","function":{"name":"post_balance","description":"Gets the balance of a user given an user id. Gets the balance of a user given an user id","parameters":{"type":"object","properties":{"userId":{"type":"string","description":"User id is the unique identitier of the user"}},"required":["userId"]}}},{"type":"function","function":{"name":"post_transfer","description":"Transfers money between two user ids. This endpoint transfers money between two user ids","parameters":{"type":"object","properties":{"toUserId":{"type":"string","description":"To user Id"},"amount":{"type":"string","description":"Amount to transfer"},"fromUserId":{"type":"string","description":"From user Id"}},"required":[]}}}]
+[
+    {
+        "type": "function",
+        "function": {
+            "name": "post_balance",
+            "description": "Gets the balance of a user given an user id. Gets the balance of a user given an user id",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "userId": {
+                        "type": "string",
+                        "description": "User id is the unique identitier of the user"
+                    }
+                },
+                "required": [
+                    "userId"
+                ]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "post_transfer",
+            "description": "Transfers money between two user ids. This endpoint transfers money between two user ids",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "toUserId": {
+                        "type": "string",
+                        "description": "To user Id"
+                    },
+                    "amount": {
+                        "type": "string",
+                        "description": "Amount to transfer"
+                    },
+                    "fromUserId": {
+                        "type": "string",
+                        "description": "From user Id"
+                    }
+                },
+                "required": []
+            }
+        }
+    }
+]

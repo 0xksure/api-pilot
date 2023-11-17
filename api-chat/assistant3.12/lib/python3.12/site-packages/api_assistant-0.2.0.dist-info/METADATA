@@ -1,0 +1,60 @@
+Metadata-Version: 2.1
+Name: api-assistant
+Version: 0.2.0
+Summary: An OpenAI assistant that can be used on top of a OpenAI functions IDL.
+License: MIT license
+Description-Content-Type: text/markdown
+Requires-Dist: annotated-types ==0.6.0
+Requires-Dist: anyio ==3.7.1
+Requires-Dist: certifi ==2023.7.22
+Requires-Dist: charset-normalizer ==3.3.2
+Requires-Dist: distro ==1.8.0
+Requires-Dist: exceptiongroup ==1.1.3
+Requires-Dist: h11 ==0.14.0
+Requires-Dist: httpcore ==1.0.2
+Requires-Dist: httpx ==0.25.1
+Requires-Dist: idna ==3.4
+Requires-Dist: openai ==1.2.4
+Requires-Dist: pydantic ==2.5.0
+Requires-Dist: pydantic-core ==2.14.1
+Requires-Dist: requests ==2.31.0
+Requires-Dist: sniffio ==1.3.0
+Requires-Dist: tqdm ==4.66.1
+Requires-Dist: typing-extensions ==4.8.0
+Requires-Dist: urllib3 ==2.1.0
+
+# API Assistant
+
+The API assistant is a [ChatGPT assistant](https://platform.openai.com/docs/assistants/overview) on top of an OpenAI IDL json file.
+The CLI will based on prompts find the correct request and send it with the provided arguments. 
+
+You can run the CLI from your terminal with
+```bash
+api-chat --idl=<OPENAI_IDL_PATH>
+```
+
+## Installation
+The tool is available at [pypi](https://pypi.org/project/api-assistant/) and can be installed using pip
+```bash
+pip install api-assistant
+```
+### Extra - convert a swagger to OpenAI IDL
+If you have generated a swagger (OpenAPI) for you API then you can use the s2o (swagger to openai) tool to convert it to a OpenAI IDL format. The tool can be installed with the cargo CLI that follows the [rust](https://www.rust-lang.org/learn/get-started) installation. 
+
+If you have cargo installed then you can install it with
+```bash
+cargo install s2o
+```
+
+In order to interact with the cli there are some environment variables that needs to be present.
+
+## Environment variables - REQUIRED
+
+- OPENAI_API_KEY<string>: An OpenAI api key
+- HOST<string>: The host of the API that you wish to query. Ex: http://localhost:8000
+- ASSISTANT_INSTRUCTIONS<string>: A description (prompt) to the assistant of its purpose. Ex: For a payments api a typical instruction could be "ou are a wrapper around a payments api. Use the provided endpoints to answer user questions. Sometimes functions has to be combined to achieve the intended result."
+
+## CLI Arguments
+There is only one argument to the CLI itself 
+- idl<string>: The path to the OpenAI IDL json. Ex: `api-chat --idl=./idls/openai.idl`.
+

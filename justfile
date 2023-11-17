@@ -19,3 +19,9 @@ chat:
 
 start: start_api generate_swagger chat
     
+build_py:
+    cd api-chat &&  python3 -m build --wheel && \
+    python3 -m build --sdist
+
+deploy_py: build_py
+    cd api-chat && twine upload dist/*
