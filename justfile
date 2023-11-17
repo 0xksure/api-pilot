@@ -25,3 +25,9 @@ build_py:
 
 deploy_py: build_py
     cd api-chat && twine upload dist/*
+
+build_s2o:
+    cd swagger_to_openai && cargo build --release
+
+deploy_s2o: build_s2o
+    cd swagger_to_openai && cargo publish
