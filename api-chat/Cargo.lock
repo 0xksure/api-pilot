@@ -729,9 +729,9 @@ checksum = "1ad4cc8da4ef723ed60bced201181d83791ad433213d8c24efffda1eec85d741"
 
 [[package]]
 name = "s2o"
-version = "0.2.0"
+version = "0.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "28035a5d0b96cd6a3671cc5c41b946e184f8cfa4ff37012f7c0a1b1680121157"
+checksum = "22349cc805f69f0a937a5efd6b55c5d8dc4665dad213a20cb952cbeeed637e34"
 dependencies = [
  "clap",
  "env_logger",

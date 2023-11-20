@@ -4,7 +4,6 @@ use std::{
     io::{Error, Write},
 };
 
-
 use serde;
 
 use crate::swagger::Swagger;
@@ -145,6 +144,7 @@ pub fn gen_openaifunctions_from_swagger(
 
 pub trait OpenAIFunctionsTrait {
     fn write_to_json_file(&self, path: &str) -> Result<(), Error>;
+    fn write_to_string(&self) -> Result<String, Error>;
 }
 
 impl OpenAIFunctionsTrait for OpenAIFunctions {
@@ -152,5 +152,10 @@ impl OpenAIFunctionsTrait for OpenAIFunctions {
         let serialized_data = serde_json::to_string(&self).unwrap();
         let mut out_file = File::create(path).unwrap();
         return out_file.write_all(serialized_data.as_bytes());
+    }
+
+    fn write_to_string(&self) -> Result<String, Error> {
+        let serialized_data = serde_json::to_string(&self).unwrap();
+        return Ok(serialized_data);
     }
 }

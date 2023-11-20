@@ -7,9 +7,9 @@ import json
 import requests
 import common.utils as utils
 from common.interface import AssistantInterface
+import api_assistant.s2opy as s2opy  
 
-
-from openai.main import OpenAIAssistant
+from oai.main import OpenAIAssistant
 import logging
 
 logger = logging.getLogger('simple_example')
@@ -27,9 +27,9 @@ logger.setLevel(logging.DEBUG)
 def main(idl):
     config = utils.get_config()
 
-    with open(idl) as f:
-        function_json = json.load(f)
 
+    function_json = s2opy.swagger_from_file("../idls/swagger/swagger.json")
+    print("function_json: ", function_json)
     assistant = OpenAIAssistant.setup_assistant(config["api_key"],config["assistant_instructions"],function_json,logger)
     print("Welcome to the OpenAI API Wrapper")
     print("Type your question and press enter to get started")
