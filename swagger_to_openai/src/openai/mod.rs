@@ -114,7 +114,8 @@ pub fn gen_openaifunctions_from_swagger(
             let path_as_camel_case = path_key
                 .split("/")
                 .map(|s| {
-                    let mut c = s.chars();
+                    let s_stripped = s.replace("{", "").replace("}", "");
+                    let mut c = s_stripped.chars();
                     match c.next() {
                         None => String::new(),
                         Some(f) => format!("_{}{}", f, c.as_str()),
