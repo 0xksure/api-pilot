@@ -13,11 +13,13 @@ pub struct Response {
 
 #[derive(Deserialize, Debug)]
 pub struct PathParameters {
-    #[serde(rename = "type")]
+    #[serde(rename = "type", default = "String::default")]
     pub path_param_type: String,
+    #[serde(default)]
     pub description: String,
+    #[serde(default)]
     pub name: String,
-    #[serde(rename = "in")]
+    #[serde(rename = "in", default = "String::default")]
     pub _in: String,
     #[serde(default)]
     pub required: bool,
@@ -25,9 +27,12 @@ pub struct PathParameters {
 
 #[derive(Deserialize, Debug)]
 pub struct Path {
+    #[serde(default)]
     pub description: String,
+    #[serde(default)]
     pub produces: Vec<String>,
     pub summary: String,
+    #[serde(default)]
     pub parameters: Vec<PathParameters>,
     pub responses: HashMap<String, Response>,
 }
@@ -44,6 +49,7 @@ pub struct Info {
 
 #[derive(Deserialize, Debug)]
 pub struct Swagger {
+    #[serde(rename = "swagger", alias = "openapi")]
     pub swagger: String,
     pub info: Info,
     pub paths: HashMap<String, HashMap<String, Path>>,
