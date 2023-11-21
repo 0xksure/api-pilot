@@ -1,25 +1,13 @@
 [project]
-name = "api_assistant"
-version = "0.4.0"
-license = "MIT license"
+name = "api_chat"
+version = "0.1.0"
+license = "MIT Lisence"
 readme = "README.md"
 
 
-[tool.maturin]
-python-source = "py_src"
-module-name = "api_assistant.s2opy"
-
-[build-system]
-requires = ["maturin>=1.0,<2.0"]
-build-backend = "maturin"
-
-
 [tool.setuptools.packages.find]
-where = ["py_src"]
+where = ["src"]
 include = ["api_assistant.*", "common", "oai"]
 
 [tool.setuptools.dynamic]
 dependencies = { file = "requirements.txt" }
-
-[project.scripts]
-api-chat = "api_assistant.main:main"
