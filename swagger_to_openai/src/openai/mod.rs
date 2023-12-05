@@ -6,7 +6,7 @@ use std::{
 
 use serde;
 
-use crate::swagger::Swagger;
+use crate::swagger::swagger2::Swagger;
 /// Contains specs for the openai function struct
 /// Ex:
 /*
@@ -67,7 +67,7 @@ pub struct OpenAIFuncProperty {
 pub struct OpenAIFuncParams {
     #[serde(rename = "type")]
     pub func_type: String,
-    pub properties: HashMap<String, OpenAIFuncProperty>,
+    pub properties: Option<HashMap<String, OpenAIFuncProperty>>,
     pub required: Vec<String>,
 }
 
@@ -93,21 +93,27 @@ pub fn gen_openaifunctions_from_swagger(
     let mut openai_functions: Vec<OpenAIFunction> = Vec::new();
     for (path_key, path_item) in swagger.paths {
         for (method, path) in path_item {
-            let mut parameters: HashMap<String, OpenAIFuncProperty> = HashMap::new();
+            let parameters: Option<HashMap<String, OpenAIFuncProperty>>;
             let mut required_params = Vec::new();
-            for parameter in path.parameters {
-                parameters.insert(
-                    parameter.name.clone(),
-                    OpenAIFuncProperty {
-                        property_type: parameter.path_param_type,
-                        description: parameter.description,
-                    },
-                );
-                let parameter_name = parameter.name;
-                log::debug!("Parameter: {:?} {:?}", &parameter_name, parameter.required);
-                if parameter.required {
-                    required_params.push(parameter_name);
+            if path.parameters.len() == 0 {
+                parameters = None;
+            } else {
+                let mut params = HashMap::new();
+                for parameter in path.parameters {
+                    params.insert(
+                        parameter.name.clone(),
+                        OpenAIFuncProperty {
+                            property_type: parameter.path_param_type,
+                            description: parameter.description,
+                        },
+                    );
+                    let parameter_name = parameter.name;
+                    log::debug!("Parameter: {:?} {:?}", &parameter_name, parameter.required);
+                    if parameter.required {
+                        required_params.push(parameter_name);
+                    }
                 }
+                parameters = Some(params);
             }
 
             // generate FunctionName
