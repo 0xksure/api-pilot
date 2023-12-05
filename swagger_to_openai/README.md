@@ -1,3 +1,7 @@
-# Swagger 2 -> OpenAI IDL
+# s2o - Swagger -> OpenAI IDL
 
-This CLI simply converts a swagger 2 to the OpenAI IDL required for code functions in the OpenAI assitant input. 
+Convert your Swagger to the OpenAI IDL standard used in their [assistant](https://platform.openai.com/docs/assistants/tools). 
+
+> 🚧 NOTE: At the moment only Swagger2 is supported 
+
+The tool can be installed using cargo and invoked using the `s2o` command.

@@ -31,3 +31,6 @@ build_s2o:
 
 deploy_s2o: build_s2o
     cd swagger_to_openai && cargo publish
+
+create_env:
+    python3 -m venv assistant

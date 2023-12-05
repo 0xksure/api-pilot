@@ -7,7 +7,7 @@ use std::{
 
 use crate::{
     openai::{gen_openaifunctions_from_swagger, OpenAIFunctionsTrait},
-    swagger::Swagger,
+    swagger::swagger2,
 };
 use clap::{Parser, Subcommand};
 
@@ -52,7 +52,7 @@ fn main() {
             );
             log::info!("Output file: {:?}", output_file_path);
             // load the swagger yaml
-            let swagger = Swagger::from_file(&swagger_file_path).unwrap();
+            let swagger = swagger2::Swagger::from_file(&swagger_file_path).unwrap();
 
             // convert to openAI
             let openai_funcs = gen_openaifunctions_from_swagger(swagger).unwrap();
@@ -89,7 +89,8 @@ fn main() {
             });
 
             for file_bytes in rx {
-                let swagger = Swagger::from_json(&String::from_utf8(file_bytes).unwrap()).unwrap();
+                let swagger =
+                    swagger2::Swagger::from_json(&String::from_utf8(file_bytes).unwrap()).unwrap();
                 let openai_funcs = gen_openaifunctions_from_swagger(swagger).unwrap();
 
                 match openai_funcs.write_to_json_file(&output_file) {
