@@ -2,7 +2,7 @@ services:
   api:
     image: err/test-api
     build: 
-      context: ./cmd
+      context: ./mock-api
       dockerfile: dockerfile
     ports:
       - 8000:8000

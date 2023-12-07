@@ -7,7 +7,6 @@ import json
 import requests
 import common.utils as utils
 from common.interface import AssistantInterface
-from s2o
 
 from openai.main import OpenAIAssistant
 import logging

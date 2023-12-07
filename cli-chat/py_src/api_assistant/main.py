@@ -41,7 +41,6 @@ def main(swagger):
             result = assistant.run_assistant(task)
             
             if result.is_err():
-                print("Error with running the assistant: ",result)
                 message = result.err()
                 print(message)
                 continue            
