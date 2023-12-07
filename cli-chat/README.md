@@ -24,4 +24,10 @@ In order to get started with the `cli-chat` you need to have python >= 3.12 inst
     > api-chat --swagger ../idls/swagger/swagger.json
 ```
 
+## FAQ
+### Symlink to python3.12
+```
+> ln -sf /usr/local/bin/python3.12 /usr/local/bin/python3
+```
+
 # l; vblsf''hh\''ssaLPYT 3YODPZ`PNVCXZSFJL;]\;'`
