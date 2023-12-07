@@ -7,7 +7,11 @@ In order to get started with the `cli-chat` you need to have python >= 3.12 inst
 ## Requirements
 - python >=3.12
 - pip install -r `requirement.txt`
-
+- Install cargo 
+    
+    ```
+    > curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+    ```
 ## Install locally
 
 ```
