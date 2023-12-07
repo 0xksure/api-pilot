@@ -6,7 +6,7 @@ In order to get started with the `cli-chat` you need to have python >= 3.12 inst
 
 ## Requirements
 - python >=3.12
-- pip install `requirement.txt`
+- pip install -r `requirement.txt`
 
 ## Install locally
 
@@ -14,3 +14,5 @@ In order to get started with the `cli-chat` you need to have python >= 3.12 inst
     > pip install --editable .
     > api-chat
 ```
+
+# l; vblsf''hh\''ssaLPYT 3YODPZ`PNVCXZSFJL;]\;'`
