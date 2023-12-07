@@ -16,7 +16,7 @@ In order to get started with the `cli-chat` you need to have python >= 3.12 inst
 
 ```
     > pip install --editable .
-    > api-chat
+    > api-chat --swagger ../idls/swagger/swagger.json
 ```
 
 # l; vblsf''hh\''ssaLPYT 3YODPZ`PNVCXZSFJL;]\;'`
