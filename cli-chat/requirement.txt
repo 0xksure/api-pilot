@@ -1,6 +1,5 @@
 annotated-types==0.6.0
 anyio==3.7.1
--e git+ssh://git@github.com/0xksure/api-pilot.git@60f34afd2431d1d1f905dff904181d00b36a52f2#egg=api_assistant&subdirectory=api-chat
 certifi==2023.7.22
 charset-normalizer==3.3.2
 click==8.1.7
@@ -16,7 +15,6 @@ pydantic==2.5.0
 pydantic_core==2.14.1
 requests==2.31.0
 result==0.14.0
--e git+ssh://git@github.com/0xksure/api-pilot.git@60f34afd2431d1d1f905dff904181d00b36a52f2#egg=s2opy&subdirectory=api-chat
 sniffio==1.3.0
 tomli==2.0.1
 tqdm==4.66.1
